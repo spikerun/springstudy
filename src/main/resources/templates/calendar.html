@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+    <style>
+        th, td {
+            text-align: center;
+        }
+        .sun {
+            color: red;
+        }
+        .sat {
+            color: blue;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>2020년 1월 달력</h1>
+    <div>
+        <button>작년</button>
+        <button>이전전달</button>
+        <button>이전달</button>
+        <button>오늘</button>
+        <button>다음달</button>
+        <button>다다음달</button>
+        <button>내년</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="sun">일</th>
+                <th>월</th>
+                <th>화</th>
+                <th>수</th>
+                <th>목</th>
+                <th>금</th>
+                <th class="sat">토</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        /**
+         * 어느 시점의 달력을 그려야 할지 기준 년월일이 필요
+         * 기준 년월일은 현재 시각 기준이라는 스팩을 정의 해주는 것
+         */
+         var currentDate = new Date();
+
+         /**
+          * 현재 년/월/일
+          */
+         var currentYear = currentDate.getFullYear();
+         var currentMonth = (currentDate.getMonth() + 1);
+         var currentDate = currentDate.getDate();
+
+         // 1이 무슨 요일인지 (0: 일요일, 1: 월요일, ... 6: 토요일)
+         var firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
+
+         // 마지막 날짜이다
+         var lastDate = (new Date(currentYear, currentMonth, 0)).getDate();
+
+         // 이거로 날짜를 찍자
+         var calendarDate = 1 - firstDay;
+
+         var tbody = document.querySelector("tbody");
+
+         var result = "";
+
+         /**
+          * 캘린더에 찍힌 날짜가 마지막 날짜 직전까지 반복문(while) 을 돌린다.
+          */
+         while (calendarDate <= lastDate) {
+            result += setWeeks();
+         }
+
+         // 마지막에 html 을 table tbody 에 반영
+         tbody.innerHTML = result;
+
+         /**
+          * 주를 만드는 역활
+          */
+         function setWeeks() {
+            var calendarHTML = "<tr>";
+
+            for (var i = 0; i < 7; i++) {
+                if(i == 0) {
+                    calendarHTML += "<td class=\"sun\">";
+                } else if (i == 6) {
+                    calendarHTML += "<td class=\"sat\">";
+                } else {
+                    calendarHTML += "<td>";
+                }
+
+                if (calendarDate > 0 && calendarDate <= lastDate) {
+                    calendarHTML += calendarDate;
+                }
+
+                calendarDate++;
+
+                calendarHTML += "</td>";
+            }
+
+            calendarHTML += "</tr>";
+
+            return calendarHTML;
+         }
+    </script>
+  </body>
+</html>
